@@ -43,12 +43,21 @@ namespace ShiftLoggerApp.Services
 
         public GetShiftDto CreateShift(PostShiftDto postShiftDto)
         {
-
+            
             var StartTimeDate = CreateDate(postShiftDto.StartTime);
             var EndTimeDate = CreateDate(postShiftDto.EndTime);
+            TimeSpan Duration = EndTimeDate - StartTimeDate;
 
-           
-            var Duration = EndTimeDate - StartTimeDate;
+
+            if (StartTimeDate < EndTimeDate)
+            {
+                Duration = EndTimeDate - StartTimeDate;
+            }
+
+            if (StartTimeDate > EndTimeDate)
+            {
+                Duration = StartTimeDate - EndTimeDate;
+            }
 
 
             Shift shift = new Shift

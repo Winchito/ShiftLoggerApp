@@ -92,8 +92,43 @@ namespace ShiftLoggerApp.Services
             };
  
         }
+        public WorkerShift? WorkerExists(int id) => _context.WorkerShifts.Find(id);
 
-        //TODO Update and Delete Methods
+        public bool UpdateWorkerShift(PutWorkerShiftDto postWorkerShiftDto)
+        {
+            try
+            {
+                var workerShift = _context.WorkerShifts.FirstOrDefault(w => w.Id == postWorkerShiftDto.Id);
+
+                workerShift.WorkerId = postWorkerShiftDto.WorkerId;
+                workerShift.ShiftId = postWorkerShiftDto.ShiftId;
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool DeleteWorkerShift(int id)
+        {
+            try
+            {
+                var workerShift = _context.WorkerShifts.FirstOrDefault(w => w.Id == id);
+
+                _context.Remove(workerShift);
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
     }
 }

@@ -84,5 +84,54 @@ namespace ShiftLoggerApp.Controllers
             return Ok(workerShift);
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult ModifyWorkerShift([FromForm] PutWorkerShiftDto postWorkerShiftDto)
+        {
+            var worker = _workerShiftService.WorkerExists(postWorkerShiftDto.Id);
+
+            if (worker == null)
+            {
+                return NotFound();
+            }
+
+            bool operation = _workerShiftService.UpdateWorkerShift(postWorkerShiftDto);
+
+            if (operation)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult DeleteWorker(int id)
+        {
+            var worker = _workerShiftService.WorkerExists(id);
+
+            if (worker == null)
+            {
+                return NotFound();
+            }
+
+            bool operation = _workerShiftService.DeleteWorkerShift(id);
+
+            if (operation)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+
+        }
+
+
     }
 }
